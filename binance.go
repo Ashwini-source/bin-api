@@ -3,9 +3,10 @@ package binance
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/websocket"
 	"net/http"
 	"strings"
+
+	"github.com/gorilla/websocket"
 )
 
 type BinanceClient struct {
@@ -300,6 +301,36 @@ func (b *BinanceClient) DepthWS(symbol string) (*DepthWS, error) {
 		return nil, err
 	}
 	return &DepthWS{wsWrapper{conn: conn}}, nil
+}
+
+// DepthLevelWS opens websocket with depth updates for the given symbol
+func (b *BinanceClient) DepthLevelWS(symbol, level string) (*DepthLevelWS, error) {
+	addr := strings.ToLower(symbol) + "@depth" + level
+	conn, _, err := b.dialer.Dial(wsAddress+addr, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &DepthLevelWS{wsWrapper{conn: conn}}, nil
+}
+
+// AllMarketTickerWS opens websocket with with single depth summary for all tickers
+func (b *BinanceClient) AllMarketTickerWS() (*AllMarketTickerWS, error) {
+	addr := "!ticker@arr"
+	conn, _, err := b.dialer.Dial(wsAddress+addr, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &AllMarketTickerWS{wsWrapper{conn: conn}}, nil
+}
+
+// IndivTickerWS opens websocket with with single depth summary for all tickers
+func (b *BinanceClient) IndivTickerWS(symbol string) (*IndivTickerWS, error) {
+	addr := strings.ToLower(symbol) + "@ticker"
+	conn, _, err := b.dialer.Dial(wsAddress+addr, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &IndivTickerWS{wsWrapper{conn: conn}}, nil
 }
 
 // KlinesWS opens websocket with klines updates for the given symbol with the given interval

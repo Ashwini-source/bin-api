@@ -2,6 +2,7 @@ package binance
 
 import (
 	"encoding/json"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -25,6 +26,51 @@ func (d *DepthWS) Read() (*DepthUpdate, error) {
 		return nil, err
 	}
 	update := &DepthUpdate{}
+	return update, json.Unmarshal(data, update)
+}
+
+// DepthLevelWS is a wrapper for depth level websocket
+type DepthLevelWS struct {
+	wsWrapper
+}
+
+// Read reads a depth update message from the depth level websocket
+func (d *DepthLevelWS) Read() (*DepthLevelUpdate, error) {
+	_, data, err := d.conn.ReadMessage()
+	if err != nil {
+		return nil, err
+	}
+	update := &DepthLevelUpdate{}
+	return update, json.Unmarshal(data, update)
+}
+
+// AllMarketTickerWS is a wrapper for all market tickers websocket
+type AllMarketTickerWS struct {
+	wsWrapper
+}
+
+// Read reads a depth update message from the depth level websocket
+func (d *AllMarketTickerWS) Read() (*AllMarketTickerUpdate, error) {
+	_, data, err := d.conn.ReadMessage()
+	if err != nil {
+		return nil, err
+	}
+	update := &AllMarketTickerUpdate{}
+	return update, json.Unmarshal(data, update)
+}
+
+// IndivTickerWS is a wrapper for an individual ticker websocket
+type IndivTickerWS struct {
+	wsWrapper
+}
+
+// Read reads a depth update message from the depth level websocket
+func (d *IndivTickerWS) Read() (*IndivTickerUpdate, error) {
+	_, data, err := d.conn.ReadMessage()
+	if err != nil {
+		return nil, err
+	}
+	update := &IndivTickerUpdate{}
 	return update, json.Unmarshal(data, update)
 }
 
