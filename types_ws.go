@@ -3,13 +3,44 @@ package binance
 type UpdateType string
 
 const (
-	UpdateTypeDepth  UpdateType = "depthUpdate"
-	UpdateTypeKline  UpdateType = "kline"
-	UpdateTypeTrades UpdateType = "aggTrade"
+	UpdateTypeDepth       UpdateType = "depthUpdate"
+	UpdateTypeIndivTicker UpdateType = "24hrTicker"
+	UpdateTypeKline       UpdateType = "kline"
+	UpdateTypeTrades      UpdateType = "aggTrade"
 
 	UpdateTypeOutboundAccountInfo UpdateType = "outboundAccountInfo"
 	UpdateTypeExecutionReport     UpdateType = "executionReport"
 )
+
+// IndivTickerUpdate represents incoming ticker websocket feed
+type IndivTickerUpdate struct {
+	EventType     UpdateType `json:"e"` // EventType represents the update type
+	Time          uint64     `json:"E"` // Time represents the event time
+	Symbol        string     `json:"s"` // Symbol represents the symbol related to the update
+	Price         string     `json:"p"` // Price is the order price
+	PricePercent  string     `json:"P"` // Price percent change
+	WeightedPrice string     `json:"w"` // Weighted average price
+	FirstTrade    string     `json:"x"` // First trade(F)-1 price (first trade before the 24hr rolling window)
+	LastPrice     string     `json:"c"` // Last price
+	LastQty       string     `json:"Q"` // Last quantity
+	BestBidPrice  string     `json:"b"` // Best bid price
+	BestBidQty    string     `json:"B"` // Best bid quantity
+	BestAskPrice  string     `json:"a"` // Best ask price
+	BestAskQty    string     `json:"A"` // Best ask quantity
+	OpenPrice     string     `json:"o"` // Open price
+	HighPrice     string     `json:"h"` // High price
+	LowPrice      string     `json:"l"` // Low price
+	VolumeBase    string     `json:"v"` // Total traded base asset volume
+	VolumeQuote   string     `json:"q"` // Total traded quote asset volume
+	StatisticOT   uint64     `json:"O"` // Statistics open time
+	StatisticsCT  uint64     `json:"C"` // Statistics close time
+	FirstTradeID  int        `json:"F"` // First trade ID
+	LastTradeID   int        `json:"L"` // Last trade ID
+	TotalTrades   int        `json:"n"` // Total number of trades
+}
+
+// AllMarketTickerUpdate represents incoming ticker websocket feed for all tickers
+type AllMarketTickerUpdate []IndivTickerUpdate
 
 // DepthUpdate represents the incoming messages for depth websocket updates
 type DepthUpdate struct {
@@ -19,6 +50,13 @@ type DepthUpdate struct {
 	UpdateID  int         `json:"u"` // UpdateID to sync up with updateid in /api/v1/depth
 	Bids      []DepthElem `json:"b"` // Bids is a list of bids for symbol
 	Asks      []DepthElem `json:"a"` // Asks is a list of asks for symbol
+}
+
+// DepthLevelUpdate represents the incoming messages for depth level websocket updates
+type DepthLevelUpdate struct {
+	LastUpdateID uint64      `json:"lastUpdateId"` // EventType represents the update type
+	Bids         []DepthElem `json:"bids"`         // Bids is a list of bids for symbol
+	Asks         []DepthElem `json:"asks"`         // Asks is a list of asks for symbol
 }
 
 // KlinesUpdate represents the incoming messages for klines websocket updates
