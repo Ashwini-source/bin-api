@@ -4,9 +4,8 @@ binance-api is a lightweight Golang implementation for [Binance API](https://www
 This project is designed to help you interact with the Binance API, streaming candlestick charts data, market depth, or use other advanced features binance exposes via API. 
 
 # Installation
-```
-go get github.com/eranyanay/binance-api
-```
+
+go get github.com/Ashwini-source/binance-api
 
 # Getting started
 ```golang
