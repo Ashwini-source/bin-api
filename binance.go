@@ -272,7 +272,7 @@ func (b *BinanceClient) ExchangeInfo() (*ExchangeInfo, error) {
 
 // Datastream starts a new user datastream
 func (b *BinanceClient) DataStream() (string, error) {
-	res, err := b.client.do(http.MethodPost, "api/v1/userDataStream", nil, false, true)
+	res, err := b.client.do(http.MethodPost, "api/v3/userDataStream", nil, false, true)
 	if err != nil {
 		return "", err
 	}
@@ -289,7 +289,7 @@ func (b *BinanceClient) DataStreamKeepAlive(listenKey string) error {
 
 // DataStreamClose closes the datastream key
 func (b *BinanceClient) DataStreamClose(listenKey string) error {
-	_, err := b.client.do(http.MethodDelete, "api/v1/userDataStream", Datastream{ListenKey: listenKey}, false, true)
+	_, err := b.client.do(http.MethodDelete, "api/v3/userDataStream", Datastream{ListenKey: listenKey}, false, true)
 	return err
 }
 
