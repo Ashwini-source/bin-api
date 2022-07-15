@@ -1,4 +1,4 @@
-module github.com/Ashwini-source/binance-api
+module github.com/Ashwini-source/bin-api
 
 go 1.18
 
