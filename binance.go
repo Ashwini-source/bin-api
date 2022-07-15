@@ -283,7 +283,7 @@ func (b *BinanceClient) DataStream() (string, error) {
 
 // DataStreamKeepAlive pings the datastream key to prevent timeout
 func (b *BinanceClient) DataStreamKeepAlive(listenKey string) error {
-	_, err := b.client.do(http.MethodPut, "api/v1/userDataStream", Datastream{ListenKey: listenKey}, false, true)
+	_, err := b.client.do(http.MethodPut, "api/v3/userDataStream", Datastream{ListenKey: listenKey}, false, true)
 	return err
 }
 
