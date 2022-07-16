@@ -203,7 +203,3 @@ for {
 }
 ```
 
-# License
-This project is licensed under the [MIT License](http://opensource.org/licenses/MIT). See the [LICENSE](LICENSE) file for more info.
-
-
